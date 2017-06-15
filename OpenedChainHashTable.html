@@ -1,0 +1,73 @@
+<script>
+function HashTable() {
+	this.table = new Array(137);
+}
+
+HashTable.prototype = {
+	simpleHash: function(data) {
+		var total = 0;
+		for(var i = 0; i < data.length; i++) {
+			total += data.charCodeAt(i);
+		}
+		document.writeln("</br>")
+		document.writeln("Hash Value: " +data+ " -> " +total);
+		return total % this.table.length;
+	},
+	put: function(key,data) {
+		var pos = this.simpleHash(key);
+		var index = 0;
+		if(this.table[pos][index] == undefined) {
+			this.table[pos][index] = data;
+		}else {
+			while(this.table[pos][index] != undefined) {
+				index++;
+			}
+			this.table[pos][index] = data;
+		}
+
+	},
+	get: function(key) {
+		var index = 0;
+		var pos = this.simpleHash(key);
+		if(this.table[pos][index] == key) {
+			return this.table[pos][index];
+		}else {
+			while(this.table[pos][index] != key) {
+				index++;
+			}
+			return this.table[pos][index];
+		}
+		return undefined;
+	},
+	showDistro: function(){
+		var n = 0;
+		for(var i = 0; i < this.table.length; i++) {
+			if(this.table[i][0] != undefined) {
+				document.writeln("</br>")
+				document.writeln(i + ":" +this.table[i]);
+			}
+		}
+	},
+
+	buildChains: function() {
+		for(var i = 0; i < this.table.length; i++) {
+			this.table[i] = new Array();
+		}
+	}
+};
+
+
+var someNames = ["David","Jennifer","Donnie","Raymond","Cynthia","Mike","Clayton","Danny","Jonathan"];
+var hTable = new HashTable();
+hTable.buildChains();
+for(var i = 0; i < someNames.length; ++i) {
+hTable.put(someNames[i],someNames[i]);
+}
+hTable.showDistro();
+document.writeln("</br>")
+document.writeln("--------------------------");
+for(var i = 0; i < someNames.length; ++i) {
+	document.writeln("</br>")
+	document.writeln("开链法 "+i + " "+hTable.get(someNames[i]));
+}
+</script>

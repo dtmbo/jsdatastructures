@@ -1,0 +1,82 @@
+<script>
+function Patient(name, code) {
+    this.name = name;
+    this.code = code; //优先码越小优先级越高, 比如,1 比 5 的优先级高
+}
+function Queue(){
+	this.dataStore = [];
+}
+
+Queue.prototype = {
+	enqueue: function(element){
+		this.dataStore.push(element);
+	},
+	dequeue: function(){
+		var priority = this.dataStore[0].code;
+        for (var i = 1; i < this.dataStore.length; ++i) {
+           	if (this.dataStore[i].code < priority) {
+              	priority = i;
+			}
+		}
+        return this.dataStore.splice(priority,1);
+	},
+	front: function(){
+		return this.dataStore[0];
+	},
+	back: function(){
+		return this.dataStore[this.dataStore.length-1]
+	},
+	toString: function(){
+		var retStr = "";
+        for (var i = 0; i < this.dataStore.length; ++i) {
+           retStr += this.dataStore[i].name + " code: "
+                  + this.dataStore[i].code + "</br>" ;
+		}
+        return retStr;
+	},
+	empty: function(){
+		if(this.dataStore.length == 0){
+			return true;
+		} else {
+			return false;
+		}
+	},
+	count: function(){
+		return this.dataStore.length;
+	}
+}
+var ed = new Queue();
+var p = new Patient("Smith",5);
+ed.enqueue(p);
+p = new Patient("Jones", 4);
+ed.enqueue(p);
+p = new Patient("Fehrenbach", 6);
+ed.enqueue(p);
+p = new Patient("Brown", 1);
+ed.enqueue(p);
+p = new Patient("Ingram", 1);
+ed.enqueue(p);
+document.writeln(ed.toString());
+document.writeln('</br>')
+var seen = ed.dequeue();
+document.writeln("Patient being treated: " + seen[0].name);
+document.writeln("</br>")
+document.writeln("Patients waiting to be seen: ")
+document.writeln(ed.toString());
+document.writeln("</br>")
+// 下一轮
+var seen = ed.dequeue();
+document.writeln("Patient being treated: " + seen[0].name); 
+document.writeln("</br>")
+document.writeln("Patients waiting to be seen: ") 
+document.writeln(ed.toString());
+document.writeln("</br>")
+
+var seen = ed.dequeue();
+document.writeln("Patient being treated: " + seen[0].name); 
+document.writeln("</br>")
+document.writeln("Patients waiting to be seen: ") 
+document.writeln(ed.toString());
+document.writeln("</br>")
+
+</script>

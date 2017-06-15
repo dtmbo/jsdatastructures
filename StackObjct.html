@@ -1,0 +1,70 @@
+<script>
+
+function Stack(){
+	this.dataStore = [];
+	this.top = 0;
+}
+
+Stack.prototype = {
+	push: function(element){
+		this.dataStore[this.top++] = element;
+	},
+	peek: function(){
+		return this.dataStore[this.top-1];
+	},
+	pop: function(){
+		return this.dataStore[--this.top];
+	},
+	clear: function(){
+		this.top = 0;
+	},
+	length: function(){
+		return this.top;
+	}
+}
+
+var s = new Stack();
+s.push("David");
+s.push("Raymond");
+s.push("Bryan");
+document.writeln("length: " + s.length());
+document.writeln("</br>")
+document.writeln(s.peek());
+document.writeln("</br>")
+
+var popped = s.pop();
+document.writeln("The popped element is: " + popped);
+document.writeln(s.peek());
+document.writeln("</br>")
+
+s.push("Cynthia");
+document.writeln(s.peek());
+document.writeln("</br>")
+
+s.clear();
+document.writeln("length: " + s.length());
+document.writeln(s.peek());
+document.writeln("</br>")
+
+s.push("Clayton");
+document.writeln(s.peek());
+document.writeln("</br>")
+
+
+function mulBase(num, base) {
+    var s = new Stack();
+    do {
+       s.push(num % base);
+       num = Math.floor(num /= base);
+    } while (num > 0);
+    var converted = "";
+    while (s.length() > 0) {
+       converted += s.pop();
+    }
+    return converted;
+ }
+
+document.writeln(mulBase(10,2))
+document.writeln("</br>")
+
+</script>

@@ -1,0 +1,129 @@
+<script>
+function Set() {
+    this.dataStore = [];
+}
+
+Set.prototype = {
+    add: function(data) {
+        // 数组的push()方法 插入元素会返回 Number——1 再利用 !!() 转化为Boolean——true
+        return this.contains(data) === false ? !!(this.dataStore.push(data)) : false;
+    },
+    remove: function(data) {
+        var index = this.contains(data, true);
+        index = isNaN(index.toString()) ? this.size() : index;
+        // 数组的splice()方法 会返回一个数组(空或非空) 要将其正确转换为Boolean就需要用join('')将空数组转换为空字符串
+        // contains(data, true) 返回index或者false 整体为两类 但是index为0这种情况要作为正确的处理就需要用isNaN()来将结果判断 isNaN('false')是true isNaN(0)是false
+        // 还有个相关的技巧 0 +/- Boolean 将Boolean转化为Number
+        return !!(this.dataStore.splice(index, 1).join(''));
+    },
+    show: function() {
+        var i=0,
+            len = this.dataStore.length;
+        while(i < len) {
+            document.writeln("</br>")
+            document.writeln(this.dataStore[i]);  
+            i++;
+        }
+    },
+    size: function() {
+        return this.dataStore.length;
+    },
+
+    contains: function(data, getIndexSign) {
+        var index = this.dataStore.indexOf(data);
+        return index > -1 ? getIndexSign === true ? index : true : false;
+    },
+    repeat: function (set, conditionSign) {
+        var tempSet = new Set(),
+            i = 0,
+            len = this.size(),
+            thisCurDataStore = null;
+        for(i = 0; i < len; i++) {
+            thisCurDataStore = this.dataStore[ i ];
+            if ((conditionSign && set.contains(thisCurDataStore)) || (!conditionSign && !set.contains(thisCurDataStore))) {
+                tempSet.dataStore.push(thisCurDataStore);
+            }
+        }
+        return tempSet;
+    },
+    union: function(set) {
+        var tempSet = new Set(),
+            dataStore = this.dataStore,
+            i = 0,
+            len = dataStore.length,
+            setCurDataStore = null;
+
+        // 拷贝当前集合中的元素到临时集合temp
+        for (i = 0; i < len; i++) {
+            tempSet.dataStore.push(dataStore[ i ]);
+        }
+
+        // 进行集合的并集
+        for(i = 0, len = set.size(); i < len; i++) {
+
+            setCurDataStore = set.dataStore[ i ];
+
+            if (!tempSet.contains(setCurDataStore)) {
+                tempSet.dataStore.push(setCurDataStore);
+            }
+        }
+
+        return tempSet;
+    },
+    subset: function(set) {
+        var that = this;
+        if (this.size() > set.size()) {
+            // 利用ECMAScript5中数组新增的every()方法
+            return set.dataStore.every(function (item) {
+                return that.contains(item);
+            });
+        } 
+        else {
+            return false;
+        }
+    },
+    difference: function(set) {
+        return this.repeat.apply(this, [set, false]);
+    },
+    intersect : function(set) {
+        return this.repeat.apply(this, [set, true]);
+    }
+
+}
+var set = new Set(),
+    set2 = new Set();
+document.writeln('测试add: ');
+document.writeln(set.add('aaa'));
+document.writeln(set.add('aaa'));
+document.writeln(set.add('bbb'));
+document.writeln(set.add('qqq'));
+document.writeln(set.add('www'));
+document.writeln(set.add('eee'));
+
+document.writeln(set2.add('qqq'));
+document.writeln(set2.add('www'));
+document.writeln(set2.add('eee'));
+
+document.writeln('</br>')
+document.writeln('测试show: ');
+set.show();
+document.writeln('</br>')
+document.writeln('测试remove: ');
+document.writeln(set.remove('aaa'));
+document.writeln(set.remove('zzz'));
+document.writeln('</br>')
+document.writeln('测试show: ');
+set.show()
+document.writeln('</br>')
+document.writeln('测试union: ');
+set.union(set2).show()
+document.writeln('</br>')
+document.writeln('测试intersect: ');
+set.intersect(set2).show()
+document.writeln('</br>')
+document.writeln('测试subset: ');
+document.writeln(set.subset(set2));
+document.writeln('</br>')
+document.writeln('测试difference: ');
+set.difference(set2).show()
+</script>

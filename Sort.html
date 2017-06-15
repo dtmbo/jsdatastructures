@@ -1,0 +1,94 @@
+<script>
+
+var nums = [1, 0, 3, 3, 5, 4, 5, 0, 6, 7];
+
+function toString(arr){
+	var restr = "";
+	for ( var i = 0; i < arr.length; i++ ) {
+		if(i == arr.length - 1){
+			restr += arr[i];	
+		} else {
+			restr += arr[i] + "--";
+		}
+		
+		if (i > 0 & i % 10 == 0) {
+			restr += "\n";
+		}
+	}
+	return restr;
+}
+
+function bubbleSort(){
+
+	for (var i = 0; i < nums.length; i++) {
+		for (var j = 0; j < nums.length; j++) {
+			if(nums[i] < nums[j]){
+				var temp = nums[i];
+				nums[i] = nums[j];
+				nums[j] = temp;
+			}
+		}
+		document.writeln(toString(nums))
+		document.writeln("</br>")
+		document.writeln("</br>")
+	}
+
+}
+document.writeln('冒泡排序：</br>')
+bubbleSort();
+
+var nums2 = [6, 8, 0, 6, 7, 4, 3, 1, 5, 10];
+function selectionSort(arr){
+	var min;
+
+	for (var i = 0; i < arr.length; i++) {
+		min = i;
+		// 比较最小项目和第i项之后的剩余数组项, 以寻找更小项
+		for (var j = i+1; j < arr.length; j++) {
+			if (arr[min] > arr[j]) { 
+				min = j; 
+			}
+		}
+		// 比较初始最小项和当前最小项, 如果不想等, 则交换两者位置
+		if (i !== min) { 
+			var temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
+		}
+		document.writeln(toString(nums2))
+		document.writeln("</br>")
+		document.writeln("</br>")
+	}
+}
+document.writeln('选择排序：</br>')
+selectionSort(nums2);
+
+var nums3 = [6, 10, 0, 6, 5, 8, 7, 4, 2, 7];
+function insertionSort(arr){
+	//假设第0个元素是一个有序的数列，第1个以后的是无序的序列，
+	//所以从第1个元素开始将无序数列的元素插入到有序数列中
+	for(var i = 1; i < arr.length; i++){
+		//升序
+		if(arr[i] < arr[i-1]){
+			//取出无序数列中的第i个作为被插入元素
+			var guard = arr[i];
+			//记住有序数列的最后一个位置，并且将有序数列位置扩大一个
+			var j = i - 1;
+			arr[i] = arr[j];
+			//比大小，找到被插入元素所在的位置
+			while(j >= 0 && guard < arr[j]){
+				arr[j+1] = arr[j];
+				j--;
+			}
+			//插入
+			arr[j+1] = guard;
+		}
+		document.writeln(toString(nums3))
+		document.writeln("</br>")
+		document.writeln("</br>")
+	}
+}
+document.writeln('插入排序：</br>')
+insertionSort(nums3);
+
+</script>

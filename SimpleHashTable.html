@@ -1,0 +1,39 @@
+<script>
+function HashTable(){
+	this.table = new Array(137); //确保散列表中用来存储数据的数组其大小是个质数,这和计算散列值时使用的取余运算有关
+}
+
+HashTable.prototype={
+	put: function(data){
+		console.log(data)
+		var pos = this.simpleHash(data);
+		this.table[pos] = data;
+	},
+	//如果键是整型,最简单的散列函数就是以数组的 长度对键取余。-->除留余数法
+	simpleHash: function(data){
+		var total = 0;
+		for (var i = 0; i < data.length; i++) {
+			total += data[i].charCodeAt();
+		}
+		document.writeln(("Hash value: " + data + " -> " + total))
+		document.writeln("</br>")
+		return total % this.table.length;
+	},
+	showDistro: function(){
+		console.log(this.table)
+		var n = 0;
+		for (var i = 0; i < this.table.length; i++) {
+			if( this.table[i] != undefined){
+				document.writeln(i + ": " + this.table[i])
+				document.writeln("</br>")
+			}
+		}
+	}
+}
+var someNames = ["David", "Jennifer", "Donnie", "Raymond", "Cynthia", "Mike", "Clayton", "Danny", "Jonathan"];
+var hTable = new HashTable();
+for (var i = 0; i < someNames.length; i++) {
+	hTable.put(someNames[i]);
+}
+hTable.showDistro();
+</script>

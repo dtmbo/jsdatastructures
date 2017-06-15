@@ -1,0 +1,69 @@
+<script>
+function HashTable() {
+	this.table = new Array(137);
+	//存储数组
+	//数组 table 和 values 并行工作,当将一个键值保存到数组 table 中时,将数据存入数组 values 中相应的 位置上
+	this.values = []; 	
+}
+
+HashTable.prototype = {
+	simpleHash: function(data) {
+		var total = 0;
+		for(var i = 0; i < data.length; i++) {
+			total += data.charCodeAt(i);
+		}
+		document.writeln("</br>")
+		document.writeln("Hash Value: " +data+ " -> " +total);
+		return total % this.table.length;
+	},
+	put: function(key,data) {
+		var pos = this.simpleHash(key);
+		if(this.table[pos] == undefined) {
+			this.table[pos] = key;
+			this.values[pos] = data;
+		}else {
+			while(this.table[pos] != undefined) {
+				++pos;
+			}
+			this.table[pos] = key;
+			this.values[pos] = data;
+		}
+	},
+	get: function(key) {
+		var pos = this.simpleHash(key);
+		if(this.table[pos] == key) {
+			return this.values[pos];
+		}else {
+			for(var i = pos+1; i < this.table.length; i++) {
+				if(this.table[i] == key) {
+					return this.values[i];
+				}
+			}
+		}
+		return undefined;
+	},
+
+	showDistro: function(){
+		var n = 0;
+		for(var i = 0; i < this.table.length; i++) {
+			if(this.table[i] != undefined) {
+				document.writeln("</br>")
+				document.writeln(i + ":" +this.table[i]);
+			}
+		}
+	}
+};
+
+var someNames = ["David","Jennifer","Donnie","Raymond","Cynthia","Mike","Clayton","Danny","Jonathan"];
+var hTable = new HashTable();
+for(var i = 0; i < someNames.length; ++i) {
+	hTable.put(someNames[i],someNames[i]);
+}
+hTable.showDistro();
+document.writeln("</br>")
+document.writeln("--------------------------");
+for(var i = 0; i < someNames.length; ++i) {
+	document.writeln("</br>")
+	document.writeln(hTable.get(someNames[i]));
+}
+</script>
